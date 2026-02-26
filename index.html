@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Personal Finance</title>
+<style>
+/* ================== CSS ================== */
+* { box-sizing: border-box; font-family: Inter, -apple-system, sans-serif; }
+body { margin:0; padding:50px; background:#f8fafc; background-image: url("data:image/svg+xml,%3Csvg width='500' height='500' viewBox='0 0 500 500' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%230f172a' stroke-opacity='0.04' stroke-width='1'%3E%3Cpath d='M0 250 Q125 200 250 250 T500 250'/%3E%3Cpath d='M0 270 Q125 320 250 270 T500 270'/%3E%3Ccircle cx='80' cy='80' r='40'/%3E%3Ccircle cx='420' cy='420' r='60'/%3E%3C/g%3E%3C/svg%3E"); }
+header { margin-bottom:35px; }
+h1 { margin:0; font-size:30px; font-weight:600; }
+.tagline { margin-top:6px; font-size:13px; color:#64748b; font-style:italic; }
+.grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap:22px; }
+.card { background: rgba(255,255,255,0.65); backdrop-filter: blur(12px); border-radius:22px; padding:22px; border:1px solid rgba(255,255,255,0.4); transition:0.25s; }
+.card:hover { transform:translateY(-2px); }
+.card.wide { min-height:350px; position:relative; }
+h2 { margin-top:0; font-size:16px; }
+.row { display:flex; gap:10px; flex-wrap:wrap; }
+input, select { padding:11px; border-radius:12px; border:1px solid #e2e8f0; font-size:13px; }
+button { background:#0f172a; color:white; border:none; border-radius:12px; padding:10px 14px; cursor:pointer; }
+li { display:flex; justify-content:space-between; padding:10px 0; font-size:13px; border-bottom:1px dashed #e2e8f0; }
+li div { display:flex; gap:10px; align-items:center; }
+li button { background:none; color:#ef4444; font-size:14px; }
+.summary { display:flex; justify-content:space-around; margin-top:10px; text-align:center; }
+.summary span { font-size:12px; color:#64748b; }
+.summary strong { display:block; font-size:18px; }
+#chart { width:100%; height:250px; }
+.watermark { position:fixed; bottom:12px; right:20px; font-size:11px; color:#94a3b8; }
+</style>
+</head>
+<body>
+
+<header>
+<h1 contenteditable="true">Personal Finance — January</h1>
+<p class="tagline">“He who has a why to live can bear almost any how.” - Friedrich Nietzsche</p>
+</header>
+
+<main class="grid">
+
+<!-- Cashflow -->
+<section class="card">
+<h2>Cashflow</h2>
+<div class="row">
+<input id="desc" placeholder="Deskripsi">
+<input id="amount" placeholder="Nominal">
+<select id="type">
+<option value="income">Pemasukan</option>
+<option value="expense">Pengeluaran</option>
+</select>
+<button onclick="addTransaction()">Add</button>
+</div>
+<ul id="list"></ul>
+</section>
+
+<!-- Budget -->
+<section class="card">
+<h2>Budgeting</h2>
+<div class="row">
+<input id="budgetName" placeholder="Kategori">
+<input id="budgetLimit" placeholder="Limit">
+<button onclick="addBudget()">Set Budget</button>
+</div>
+<ul id="budgetList"></ul>
+</section>
+
+<!-- Debt -->
+<section class="card">
+<h2>Utang / Piutang</h2>
+<div class="row">
+<input id="debtName" placeholder="Nama">
+<input id="debtAmount" placeholder="Nominal">
+<button onclick="addDebt()">Add</button>
+</div>
+<ul id="debtList"></ul>
+</section>
+
+<!-- Chart -->
+<section class="card wide">
+<h2>Financial Overview</h2>
+<canvas id="chart"></canvas>
+<div class="summary">
+<div><span>Pemasukan</span><strong id="totalIncome">0</strong></div>
+<div><span>Pengeluaran</span><strong id="totalExpense">0</strong></div>
+<div><span>Sisa</span><strong id="balance">0</strong></div>
+</div>
+</section>
+
+</main>
+
+<div class="watermark">Made by Firman</div>
+<button id="exportPDF">Save as PDF</button>
+
+<!-- Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- All JS -->
+<script>
+var transactions=[],debts=[],budgets=[],chart;
+
+function formatNumber(n){return Number(n).toLocaleString("id-ID");}
+function parseNumber(v){return Number(v.replace(/\./g,"").replace(/,/g,""));}
+
+function addTransaction(){const d=document.getElementById("desc").value,a=document.getElementById("amount").value,t=document.getElementById("type").value;if(!d||!a)return;transactions.push({desc:d,amount:parseNumber(a),type:t});document.getElementById("desc").value="";document.getElementById("amount").value="";render();}
+function deleteTransaction(i){transactions.splice(i,1);render();}
+function addBudget(){const n=document.getElementById("budgetName").value,l=document.getElementById("budgetLimit").value;if(!n||!l)return;budgets.push({name:n,limit:parseNumber(l)});document.getElementById("budgetName").value="";document.getElementById("budgetLimit").value="";render();}
+function deleteBudget(i){budgets.splice(i,1);render();}
+function addDebt(){const n=document.getElementById("debtName").value,a=document.getElementById("debtAmount").value;if(!n||!a)return;debts.push({name:n,amount:parseNumber(a)});document.getElementById("debtName").value="";document.getElementById("debtAmount").value="";render();}
+function deleteDebt(i){debts.splice(i,1);render();}
+
+function render(){renderTransactions();renderBudgets();renderDebts();renderSummary();}
+
+function renderTransactions(){const l=document.getElementById("list");l.innerHTML="";transactions.forEach((t,i)=>{const li=document.createElement("li");li.innerHTML=`<span>${t.desc}</span><div><strong>${formatNumber(t.amount)}</strong><button onclick="deleteTransaction(${i})">✕</button></div>`;l.appendChild(li);});}
+function renderBudgets(){const l=document.getElementById("budgetList");l.innerHTML="";budgets.forEach((b,i)=>{const li=document.createElement("li");li.innerHTML=`<span>${b.name}</span><div><strong>${formatNumber(b.limit)}</strong><button onclick="deleteBudget(${i})">✕</button></div>`;l.appendChild(li);});}
+function renderDebts(){const l=document.getElementById("debtList");l.innerHTML="";debts.forEach((d,i)=>{const li=document.createElement("li");li.innerHTML=`<span>${d.name}</span><div><strong>${formatNumber(d.amount)}</strong><button onclick="deleteDebt(${i})">✕</button></div>`;l.appendChild(li);});}
+
+function renderSummary(){let i=0,e=0;transactions.forEach(t=>t.type==="income"?i+=t.amount:e+=t.amount);document.getElementById("totalIncome").innerText=formatNumber(i);document.getElementById("totalExpense").innerText=formatNumber(e);document.getElementById("balance").innerText=formatNumber(i-e);renderChart(i,e);}
+
+function renderChart(i,e){const c=document.getElementById("chart");if(!c)return;const ctx=c.getContext("2d");if(chart&&chart.canvas)chart.destroy();chart=new Chart(ctx,{type:"doughnut",data:{labels:["Pemasukan","Pengeluaran"],datasets:[{data:[i,e],backgroundColor:["#22c55e","#ef4444"]}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{position:"bottom"}}}});}
+
+window.addEventListener("DOMContentLoaded",()=>{
+document.getElementById("exportPDF")?.addEventListener("click",async()=>{
+renderSummary();
+await new Promise(r=>setTimeout(r,200));
+const e=document.body,c=await html2canvas(e,{scale:2,useCORS:true});const d=c.toDataURL("image/png");const {jsPDF}=window.jspdf,p=new jsPDF("p","mm","a4");const w=210,h=c.height*w/c.width;let hl=h,pst=0;p.addImage(d,"PNG",0,pst,w,h);hl-=297;while(hl>=0){pst=hl-h;p.addPage();p.addImage(d,"PNG",0,pst,w,h);hl-=297;}p.save("LaporanKeuangan.pdf");
+});
+});
+</script>
+
+</body>
+</html>
