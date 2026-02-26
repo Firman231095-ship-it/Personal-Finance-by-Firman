@@ -2,106 +2,71 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Personal Finance — Pastel Pink + Soft Blue Cards + Pattern</title>
+<title>Personal Finance — FINAL</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Gloock&family=Inter:wght@400;600&display=swap');
-
-* { box-sizing:border-box; margin:0; padding:0; }
-body {
-  min-height:100vh;
-  padding:50px;
-  font-family:'Inter', sans-serif;
-  color:#1e293b;
-  overflow-x:hidden;
-  position:relative;
-  background:#ffe4e6; /* soft pastel pink */
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  min-height:100vh;padding:50px;font-family:'Inter',sans-serif;color:#1e293b;overflow-x:hidden;position:relative;background:#ffe4e6;
 }
-
-/* Background subtle pattern */
-body::before {
-  content:"";
-  position:absolute;
-  top:0; left:0; width:100%; height:100%;
-  background-image: 
-    radial-gradient(circle 15px, rgba(255, 255, 255,0.08) 1px, transparent 1px),
-    radial-gradient(circle 10px, rgba(173,216,230,0.08) 1px, transparent 1px);
-  background-size:50px 50px, 70px 70px;
+body::before{
+  content:"";position:absolute;top:0;left:0;width:100%;height:100%;
+  background-image: radial-gradient(circle 15px, rgba(255, 255, 255,0.08) 1px, transparent 1px),
+  radial-gradient(circle 10px, rgba(173,216,230,0.08) 1px, transparent 1px);
+  background-size:50px 50px,70px 70px;pointer-events:none;z-index:0;
+}
+.petal{position:absolute;border-radius:50%;z-index:1;animation:fall linear infinite;}
+@keyframes fall{0%{transform:translateY(-50px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(360deg);opacity:0;}}
+header{text-align:center;margin-bottom:50px;position:relative;z-index:2;}
+h1{font-family:'Gloock',serif;font-size:42px;font-weight:700;text-shadow:0 2px 5px rgba(0,0,0,0.2);}
+.tagline{font-family:'Gloock',serif;font-style:italic;font-size:16px;color:#475569;margin-top:6px;text-shadow:0 1px 3px rgba(0,0,0,0.2);}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:22px;position:relative;z-index:2;margin-bottom:60px;}
+.card{background:rgba(173,216,230,0.2);backdrop-filter:blur(18px);border-radius:22px;padding:22px;border:1px solid rgba(255,255,255,0.25);box-shadow:0 10px 25px rgba(0,0,0,0.08);transition:0.3s;position:relative;z-index:2;}
+.card:hover{transform:translateY(-5px) scale(1.01);box-shadow:0 15px 35px rgba(0,0,0,0.12);}
+.card.wide{min-height:350px;}
+h2{margin-top:0;font-size:18px;font-weight:600;color:#1e293b;}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+input,select{flex:1;padding:11px;font-size:13px;border-radius:12px;border:1px solid #cbd5e1;background:rgba(255,255,255,0.65);transition:0.25s;outline:none;}
+input:focus,select:focus{border-color:#6366f1;box-shadow:0 0 8px rgba(99,102,241,0.25);}
+button.mainBtn{background:linear-gradient(135deg,#6366f1,#22d3ee);color:white;font-weight:600;border:none;border-radius:12px;padding:10px 14px;cursor:pointer;transition:0.25s;}
+button.mainBtn:hover{transform:scale(1.05);box-shadow:0 0 10px rgba(99,102,241,0.4);}
+ul{list-style:none;padding:0;max-height:200px;overflow-y:auto;}
+li{display:flex;justify-content:space-between;align-items:center;padding:10px 0;font-size:13px;border-bottom:1px dashed #e2e8f0;}
+li div{display:flex;gap:10px;align-items:center;}
+li button.deleteBtn{background:none;border:none;color:#ef4444;font-size:14px;cursor:pointer;transition:0.2s;padding:0;margin:0;}
+li button.deleteBtn:hover{color:#b91c1c;}
+.summary{display:flex;justify-content:space-around;margin-top:12px;text-align:center;}
+.summary span{font-size:12px;color:#64748b;}
+.summary strong{display:block;font-size:18px;font-weight:600;}
+#chart{width:100%;height:250px;}
+#bottomButtons{
+  position:fixed;
+  bottom:50px; /* dinaikkan supaya tidak ketutupan watermark */
+  right:20px;
+  display:flex;
+  gap:10px;
+  z-index:9999;
+}
+#bottomButtons button{
+  background:linear-gradient(135deg,#6366f1,#22d3ee);
+  color:white;
+  font-weight:600;
+  border:none;
+  border-radius:12px;
+  padding:10px 14px;
+  cursor:pointer;
+  transition:0.25s;
+}
+#bottomButtons button:hover{transform:scale(1.05);box-shadow:0 0 10px rgba(99,102,241,0.4);}
+.watermark{
+  position:fixed;
+  bottom:12px; /* tetap di bawah layar */
+  right:20px;
+  font-size:11px;
+  color:#94a3b8;
+  z-index:10000; /* di atas tombol */
   pointer-events:none;
-  z-index:0;
 }
-
-/* Sakura petals */
-.petal {
-  position:absolute;
-  width:12px;
-  height:12px;
-  background: rgba(255,182,193,0.8);
-  border-radius:50%;
-  z-index:1;
-  animation:fall linear infinite;
-}
-@keyframes fall { 
-  0%{ transform: translateY(-50px) rotate(0deg); opacity:1; } 
-  100%{ transform: translateY(100vh) rotate(360deg); opacity:0; } 
-}
-
-/* Header */
-header { text-align:center; margin-bottom:50px; position:relative; z-index:2; }
-h1 { font-family:'Gloock', serif; font-size:42px; font-weight:700; text-shadow:0 2px 5px rgba(0,0,0,0.2); }
-.tagline { font-family:'Gloock', serif; font-style:italic; font-size:16px; color:#475569; margin-top:6px; text-shadow:0 1px 3px rgba(0,0,0,0.2); }
-
-/* Grid */
-.grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap:22px; position:relative; z-index:2; }
-
-/* Cards with ultra subtle blue tint */
-.card {
-  background: rgba(173,216,230,0.2); /* soft subtle blue */
-  backdrop-filter: blur(18px);
-  border-radius:22px;
-  padding:22px;
-  border:1px solid rgba(255,255,255,0.25);
-  box-shadow:0 10px 25px rgba(0,0,0,0.08);
-  transition:0.3s;
-  position:relative;
-  z-index:2;
-}
-.card:hover { transform: translateY(-5px) scale(1.01); box-shadow:0 15px 35px rgba(0,0,0,0.12); }
-.card.wide { min-height:350px; }
-
-/* Typography & Inputs */
-h2 { margin-top:0; font-size:18px; font-weight:600; color:#1e293b; }
-.row { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
-input, select {
-  flex:1; padding:11px; font-size:13px; border-radius:12px;
-  border:1px solid #cbd5e1; background:rgba(255,255,255,0.65);
-  transition:0.25s; outline:none;
-}
-input:focus, select:focus { border-color:#6366f1; box-shadow:0 0 8px rgba(99,102,241,0.25); }
-
-button {
-  background: linear-gradient(135deg,#6366f1,#22d3ee);
-  color:white; font-weight:600; border:none; border-radius:12px;
-  padding:10px 14px; cursor:pointer; transition:0.25s;
-}
-button:hover { transform:scale(1.05); box-shadow:0 0 10px rgba(99,102,241,0.4); }
-
-/* Lists */
-ul { list-style:none; padding:0; max-height:200px; overflow-y:auto; }
-li { display:flex; justify-content:space-between; align-items:center; padding:10px 0; font-size:13px; border-bottom:1px dashed #e2e8f0; }
-li div { display:flex; gap:10px; align-items:center; }
-li button { background:none; color:#ef4444; font-size:14px; cursor:pointer; transition:0.2s; }
-li button:hover { color:#b91c1c; }
-
-/* Summary */
-.summary { display:flex; justify-content:space-around; margin-top:12px; text-align:center; }
-.summary span { font-size:12px; color:#64748b; }
-.summary strong { display:block; font-size:18px; font-weight:600; }
-
-/* Chart */
-#chart { width:100%; height:250px; }
-
-/* Watermark */
-.watermark { position:fixed; bottom:12px; right:20px; font-size:11px; color:#94a3b8; z-index:2; }
 </style>
 </head>
 <body>
@@ -122,7 +87,7 @@ li button:hover { color:#b91c1c; }
 <option value="income">Income</option>
 <option value="expense">Expense</option>
 </select>
-<button onclick="addTransaction()">Add</button>
+<button class="mainBtn" onclick="addTransaction()">Add</button>
 </div>
 <ul id="list"></ul>
 </section>
@@ -132,7 +97,7 @@ li button:hover { color:#b91c1c; }
 <div class="row">
 <input id="budgetName" placeholder="Category">
 <input id="budgetLimit" placeholder="Limit">
-<button onclick="addBudget()">Set Budget</button>
+<button class="mainBtn" onclick="addBudget()">Set Budget</button>
 </div>
 <ul id="budgetList"></ul>
 </section>
@@ -142,7 +107,7 @@ li button:hover { color:#b91c1c; }
 <div class="row">
 <input id="debtName" placeholder="Name">
 <input id="debtAmount" placeholder="Amount">
-<button onclick="addDebt()">Add</button>
+<button class="mainBtn" onclick="addDebt()">Add</button>
 </div>
 <ul id="debtList"></ul>
 </section>
@@ -159,54 +124,43 @@ li button:hover { color:#b91c1c; }
 
 </main>
 
+<div id="bottomButtons">
+<button id="exportPDF">Save PDF</button>
+<button id="saveData">Save Data</button>
+<button id="clearAll">Clear All</button>
+</div>
+
 <div class="watermark">Made by Firman</div>
-<button id="exportPDF">Save as PDF</button>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
 <script>
 var transactions=[],debts=[],budgets=[],chart;
-
 function formatNumber(n){return Number(n).toLocaleString("id-ID");}
 function parseNumber(v){return Number(v.replace(/\./g,"").replace(/,/g,""));}
-
 function addTransaction(){const d=document.getElementById("desc").value,a=document.getElementById("amount").value,t=document.getElementById("type").value;if(!d||!a)return;transactions.push({desc:d,amount:parseNumber(a),type:t});document.getElementById("desc").value="";document.getElementById("amount").value="";render();}
 function deleteTransaction(i){transactions.splice(i,1);render();}
 function addBudget(){const n=document.getElementById("budgetName").value,l=document.getElementById("budgetLimit").value;if(!n||!l)return;budgets.push({name:n,limit:parseNumber(l)});document.getElementById("budgetName").value="";document.getElementById("budgetLimit").value="";render();}
 function deleteBudget(i){budgets.splice(i,1);render();}
 function addDebt(){const n=document.getElementById("debtName").value,a=document.getElementById("debtAmount").value;if(!n||!a)return;debts.push({name:n,amount:parseNumber(a)});document.getElementById("debtName").value="";document.getElementById("debtAmount").value="";render();}
 function deleteDebt(i){debts.splice(i,1);render();}
-
 function render(){renderTransactions();renderBudgets();renderDebts();renderSummary();}
-function renderTransactions(){const l=document.getElementById("list");l.innerHTML="";transactions.forEach((t,i)=>{const li=document.createElement("li");li.innerHTML=`<span>${t.desc}</span><div><strong>${formatNumber(t.amount)}</strong><button onclick="deleteTransaction(${i})">✕</button></div>`;l.appendChild(li);});}
-function renderBudgets(){const l=document.getElementById("budgetList");l.innerHTML="";budgets.forEach((b,i)=>{const li=document.createElement("li");li.innerHTML=`<span>${b.name}</span><div><strong>${formatNumber(b.limit)}</strong><button onclick="deleteBudget(${i})">✕</button></div>`;l.appendChild(li);});}
-function renderDebts(){const l=document.getElementById("debtList");l.innerHTML="";debts.forEach((d,i)=>{const li=document.createElement("li");li.innerHTML=`<span>${d.name}</span><div><strong>${formatNumber(d.amount)}</strong><button onclick="deleteDebt(${i})">✕</button></div>`;l.appendChild(li);});}
-
+function renderTransactions(){const l=document.getElementById("list");l.innerHTML="";transactions.forEach((t,i)=>{const li=document.createElement("li");li.innerHTML=`<span>${t.desc}</span><div><strong>${formatNumber(t.amount)}</strong><button class="deleteBtn" onclick="deleteTransaction(${i})">✕</button></div>`;l.appendChild(li);});}
+function renderBudgets(){const l=document.getElementById("budgetList");l.innerHTML="";budgets.forEach((b,i)=>{const li=document.createElement("li");li.innerHTML=`<span>${b.name}</span><div><strong>${formatNumber(b.limit)}</strong><button class="deleteBtn" onclick="deleteBudget(${i})">✕</button></div>`;l.appendChild(li);});}
+function renderDebts(){const l=document.getElementById("debtList");l.innerHTML="";debts.forEach((d,i)=>{const li=document.createElement("li");li.innerHTML=`<span>${d.name}</span><div><strong>${formatNumber(d.amount)}</strong><button class="deleteBtn" onclick="deleteDebt(${i})">✕</button></div>`;l.appendChild(li);});}
 function renderSummary(){let i=0,e=0;transactions.forEach(t=>t.type==="income"?i+=t.amount:e+=t.amount);document.getElementById("totalIncome").innerText=formatNumber(i);document.getElementById("totalExpense").innerText=formatNumber(e);document.getElementById("balance").innerText=formatNumber(i-e);renderChart(i,e);}
 function renderChart(i,e){const c=document.getElementById("chart");if(!c)return;const ctx=c.getContext("2d");if(chart&&chart.canvas)chart.destroy();chart=new Chart(ctx,{type:"doughnut",data:{labels:["Income","Expense"],datasets:[{data:[i,e],backgroundColor:["#22c55e","#ef4444"]}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{position:"bottom"}}}});}
-
 window.addEventListener("DOMContentLoaded",()=>{
-document.getElementById("exportPDF")?.addEventListener("click",async()=>{
-renderSummary();
-await new Promise(r=>setTimeout(r,200));
-const e=document.body,c=await html2canvas(e,{scale:2,useCORS:true});const d=c.toDataURL("image/png");const {jsPDF}=window.jspdf,p=new jsPDF("p","mm","a4");const w=210,h=c.height*w/c.width;let hl=h,pst=0;p.addImage(d,"PNG",0,pst,w,h);hl-=297;while(hl>=0){pst=hl-h;p.addPage();p.addImage(d,"PNG",0,pst,w,h);hl-=297;}p.save("FinancialReport.pdf");
-});
-
-// Sakura petals with top-to-bottom distribution
-let petalCount=50;
-for(let i=0;i<petalCount;i++){
-  let petal=document.createElement('div');
-  petal.classList.add('petal');
-  petal.style.left=Math.random()*100+'vw';
-  petal.style.top=-(Math.random()*50+20)+'px'; // start above top
-  petal.style.animationDuration=(5+Math.random()*5)+'s';
-  petal.style.width=8+Math.random()*12+'px';
-  petal.style.height=8+Math.random()*12+'px';
-  petal.style.opacity=0.7+Math.random()*0.3;
-  document.body.appendChild(petal);
-}
+  const savedData=JSON.parse(localStorage.getItem("financeData")||"{}");
+  if(savedData.transactions)transactions=savedData.transactions;
+  if(savedData.budgets)budgets=savedData.budgets;
+  if(savedData.debts)debts=savedData.debts;
+  render();
+  for(let i=0;i<50;i++){let p=document.createElement('div');p.classList.add('petal');p.style.left=Math.random()*100+'vw';p.style.top=-(Math.random()*50+20)+'px';p.style.width=8+Math.random()*12+'px';p.style.height=8+Math.random()*12+'px';p.style.background='rgba(255,182,193,'+(0.6+Math.random()*0.4)+')';p.style.animationDuration=(5+Math.random()*5)+'s';document.body.appendChild(p);}
+  document.getElementById("exportPDF").addEventListener("click",async()=>{renderSummary();await new Promise(r=>setTimeout(r,200));const e=document.body,c=await html2canvas(e,{scale:2,useCORS:true});const d=c.toDataURL("image/png");const {jsPDF}=window.jspdf,p=new jsPDF("p","mm","a4");const w=210,h=c.height*w/c.width;let hl=h,pst=0;p.addImage(d,"PNG",0,pst,w,h);hl-=297;while(hl>=0){pst=hl-h;p.addPage();p.addImage(d,"PNG",0,pst,w,h);hl-=297;}p.save("FinancialReport.pdf");});
+  document.getElementById("saveData").addEventListener("click",()=>{localStorage.setItem("financeData",JSON.stringify({transactions,budgets,debts}));alert("Data berhasil disimpan di browser!");});
+  document.getElementById("clearAll").addEventListener("click",()=>{if(confirm("Yakin ingin menghapus semua data?")){transactions=[];budgets=[];debts=[];render();localStorage.removeItem("financeData");}});
 });
 </script>
 </body>
